@@ -1,5 +1,4 @@
 const express = require("express")
-const bpdyParser = require("body-parser");
 const bodyParser = require("body-parser");
 const connection = require("./database/database")
 const app = express();
@@ -11,6 +10,10 @@ app.use(bodyParser.json())
 const categoriesController = require("./categories/CategoriesController")
 const articlesController = require("./articles/ArticlesController")
 
+const Article = require("./articles/Article")
+const Category = require("./categories/Category")
+
+
 connection
 .authenticate()
 .then(() => {
@@ -18,7 +21,7 @@ connection
 }).catch(()=>{
     console.log("error ao conectar");
 })
-        
+
 app.use("/",categoriesController)
 app.use("/",articlesController)
 
