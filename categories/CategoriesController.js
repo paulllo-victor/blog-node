@@ -32,7 +32,7 @@ router.post("/categories/delete", (req, res) => {
     var id = req.body.id
 
     if(id != undefined){
-        if(!isNaN(id)){
+        // if(!isNaN(id)){
             Category.destroy({
                 where: {
                     id
@@ -40,12 +40,46 @@ router.post("/categories/delete", (req, res) => {
             }).then(() =>{
                 res.redirect("/admin/categories")
             })
-        }else{
-            res.redirect("/admin/categories")
-        }
+        // }else{
+        //     res.redirect("/admin/categories")
+        // }
     }else{
         res.redirect("/admin/categories")
     }
+})
+
+router.get("/admin/categories/edit/:id",(req,res) => {
+    var id = req.params.id
+
+    // if(isNaN(id)){
+    //     res.redirect("/admin/categories") 
+    // }
+
+    Category.findByPk(id).then(category => {
+        if(category != undefined){
+            res.render("admin/categories/edit",{category})
+        }else{
+           res.redirect("/admin/categories") 
+        }
+    }).catch(erro => {
+        res.redirect("/admin/categories") 
+    })
+});
+
+router.post("/categories/update", (req,res) => {
+    var id = req.body.id;
+    var title = req.body.title;
+
+    Category.update({
+        title,
+        slug: slugify(title)
+    }, {
+        where: {
+            id
+        }
+    }).then(() => {
+        res.redirect("/admin/categories") 
+    })
 })
 
 module.exports = router;
