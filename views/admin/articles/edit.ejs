@@ -1,0 +1,29 @@
+<%- include("../../partials/header.ejs") %>
+<%- include("../../partials/navbar.ejs") %>
+
+<div class="container">
+    <hr>
+    <div class="card">
+        <div class="card-header">
+            <h2>Novo artigo</h2>
+        </div>
+        <div class="card-body">
+            <form action="/admin/articles/update" method="POST">
+                <input type="text" class="form-control" name="title" value="<%= article.title %>" placeholder="Defina o título da artigo" id="">
+                <br>
+                <input type="hidden" name="id" value="<%= article.id %>">
+                <textarea name="body" id="" placeholder="Escreva o artigo aqui" cols="30" rows="10" class="form-control"><%= article.body %></textarea>
+                <br>
+                <label for="">Categória</label>
+                <select name="categoryId" id="" class="form-control">
+                    <% categories.forEach(category => {%>
+                        <option value="<%= category.id %>" <%= article.categoryId == category.id ? "selected" : "" %>><%= category.title %></option>
+                    <% })%>
+                </select>
+                <br>
+                <button type="submit" class="btn btn-success">Editar</button>
+            </form>
+        </div>
+    </div>
+</div>
+<%- include("../../partials/footer.ejs") %>

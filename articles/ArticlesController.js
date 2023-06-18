@@ -33,6 +33,40 @@ router.post("/admin/articles/save", (req,res) => {
         res.redirect("/admin/articles")
     })
 })
+router.get("/admin/articles/edit/:id", (req,res) => {
+    var id = req.params.id
+    Article.findByPk(id).then(article => {
+        console.log(article);
+        if(article != undefined){
+            Category.findAll().then(categories => {
+                res.render("admin/articles/edit",{article,categories})
+            })
+        }else{
+            res.redirect("/admin/articles")
+        }
+    }).catch(erro =>{
+        res.redirect("/admin/articles")
+    })
+})
+router.post("/admin/articles/update", (req,res) => {
+    var id = req.body.id
+    var title = req.body.title
+    var body = req.body.body
+    var categoryId = req.body.categoryId
+
+    Article.update({
+        title,
+        slug: slugify(title),
+        body,
+        categoryId
+    },{
+        where: {
+            id
+        }
+    }).then(() => {
+        res.redirect("/admin/articles")
+    })
+})
 
 router.post("/articles/delete", (req, res) => {
     var id = req.body.id

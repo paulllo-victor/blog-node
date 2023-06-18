@@ -25,6 +25,7 @@
                     <th><%= articles.category.title %></th>
                     <th>
                         <a href="/admin/articles/edit/<%= articles.id %>" class="btn btn-warning">Editar</a>
+                        
                         <form action="/articles/delete" method="POST" class="d-inline" onsubmit="confirmDelete(event,this)">
                             <input type="hidden" name="id" value="<%= articles.id %>">
                             <button type="submit" class="btn btn-danger">Deletar</button>
