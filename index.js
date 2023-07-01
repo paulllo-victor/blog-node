@@ -1,17 +1,28 @@
 const express = require("express")
 const bodyParser = require("body-parser");
+const session = require("express-session")
 const connection = require("./database/database")
 const app = express();
+
 app.set('view engine','ejs')
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 
+app.use(session({
+    secret: "casa",
+    cookie: {
+        maxAge: 30000
+    }
+}))
+
 const categoriesController = require("./categories/CategoriesController")
 const articlesController = require("./articles/ArticlesController")
+const userController = require("./users/UsersController")
 
 const Article = require("./articles/Article")
 const Category = require("./categories/Category")
+const User = require("./users/User")
 
 
 connection
@@ -24,9 +35,11 @@ connection
 
 app.use("/",categoriesController)
 app.use("/",articlesController)
+app.use("/",userController)
 
 app.get("/",(req,res)=>{
     Article.findAll({
+        limit: 4,
         order: [
             ["id","DESC"]
         ]
